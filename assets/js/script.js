@@ -2,20 +2,24 @@
 // =====================================================================
 var omdbKey = "38a65d1a";
 
-// write a function which initializes code
-// ========================================================
+// write a function which initializes code from event listener on submit button
+// =====================================================================
 function init(event) {
   event.preventDefault();
-  omdbDataRequest();
+  //   targets element from html with id of "input-field"
+  var inputField = document.getElementById("input-field");
+  //   gets input value from search bar
+  var movieTitle = inputField.value;
+  //   sends http request to omdb for movie data, passing in movieTitle as an argument
+  omdbDataRequest(movieTitle);
+  //   resets search bar value to an empty string
+  inputField.value = "";
 }
 
 // write a function which makes a fetch/http request to the OMDB API for data
 // =====================================================================
-function omdbDataRequest() {
-  var inputField = document.getElementById("input-field");
-  var movieTitle = inputField.value;
-  var omdbUrl =
-    "http://www.omdbapi.com/?t=" + movieTitle + "&apikey=" + omdbKey;
+function omdbDataRequest(movie) {
+  var omdbUrl = "http://www.omdbapi.com/?t=" + movie + "&apikey=" + omdbKey;
 
   fetch(omdbUrl)
     .then(function (response) {
@@ -23,13 +27,15 @@ function omdbDataRequest() {
     })
     .then(function (data) {
       console.log(data);
+      //   stores desired data in var's
       var title = data.Title;
       var year = data.Year;
       var rated = data.Rated;
       var runtime = data.Runtime;
       var genre = data.Genre;
-      var dir = data.Director;  
+      var dir = data.Director;
 
+      //   pass data into function call as arguments
       createMovieDataElements(title, year, rated, runtime, genre, dir);
     });
 }
@@ -47,14 +53,14 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   var movieRuntime = document.createElement("h3");
   var movieGenre = document.createElement("h3");
   var movieDir = document.createElement("h3");
-
+  // set content on elements
   movieTitle.textContent = "Title: " + title;
   movieYear.textContent = "Year: " + year;
   movieRated.textContent = "Rating: " + rated;
   movieRuntime.textContent = "Runtime: " + runtime;
   movieGenre.textContent = "Genre: " + genre;
   movieDir.textContent = "Director: " + director;
-
+  // append elements to document
   movieDiv.appendChild(movieTitle);
   movieDiv.appendChild(movieYear);
   movieDiv.appendChild(movieRated);
@@ -99,6 +105,7 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
 // create an event listener for search bar submit form from document
 // =====================================================================
 var inputForm = document.getElementById("input-form");
+// calls init function upon submit button
 inputForm.addEventListener("submit", init);
 
 // using event delegation, create an event listener for a button which
