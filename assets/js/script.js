@@ -3,6 +3,10 @@
 var omdbKey = "38a65d1a";
 var omdbUrl = "http://www.omdbapi.com/?i=tt3896198&apikey=" + omdbKey;
 
+
+// write a function which makes a fetch/http request to the OMDB API
+
+
 // write a function which makes a fetch/http request to the OMDB API for data
 // =====================================================================
 fetch (omdbUrl) 
