@@ -2,7 +2,7 @@
 // =====================================================================
 var omdbKey = "38a65d1a";
 var movieDiv = document.getElementById("movie");
-
+var reviewsDiv = document.getElementById("reviews")
 // write a function which initializes code from event listener on submit button
 // =====================================================================
 function init(event) {
@@ -13,6 +13,7 @@ function init(event) {
   var movieTitle = inputField.value;
   //   sends http request to omdb for movie data, passing in movieTitle as an argument
   omdbDataRequest(movieTitle);
+  nytDataRequest(movieTitle);
   //   resets search bar value to an empty string
   inputField.value = "";
 }
@@ -51,7 +52,8 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   var movieRuntime = document.createElement("h3");
   var movieGenre = document.createElement("h3");
   var movieDir = document.createElement("h3");
-  // set content on elements
+
+    // set content on elements
   movieTitle.textContent = "Title: " + title;
   movieYear.textContent = "Year: " + year;
   movieRated.textContent = "Rating: " + rated;
@@ -90,6 +92,50 @@ function removeOmdbBeforeAppend() {
 
 // write a function which makes a fetch/http request to the NYT API
 // =====================================================================
+
+var nytKey = "F65iUnYMHIuXFqyxD64typ0dIZG0gqFF";
+var reviewDiv = document.getElementById("reviews");
+
+function nytDataRequest(movie) {
+  var nytUrl = "https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=" + movie + "&api-key=" + nytKey;
+
+  fetch(nytUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data.results[0].display_title);
+      console.log(data.results[0].link.url);
+      console.log(data.results[0].summary_short);
+       
+      //store returned data in var
+      var nytTitle = data.results[0].display_title;
+      var nytLink = data.results[0].link.url;
+      var nytSummary = data.results[0].summary_short;
+      console.log(nytTitle);
+      console.log(nytLink);
+      console.log(nytSummary);
+      createReviewDataElements(nytTitle, nytLink, nytSummary);
+    });
+  }
+
+  function createReviewDataElements(title, link, summary) {
+    // dynamically create elements
+    var nytTitle = document.createElement("h2");
+    var nytLink = document.createElement("h3");
+    var nytSummary = document.createElement("h3");
+
+     // set content on elements
+     nytTitle.textContent = "Title: " + title;
+     nytLink.textContent = "Link: " + link;
+     nytSummary.textContent = "Summary: " + summary;
+
+     reviewsDiv.appendChild(nytTitle);
+     reviewsDiv.appendChild(nytLink);
+     reviewsDiv.appendChild(nytSummary);
+  }
+
+
 
 // write a function which dynamically creates elements to display
 // response data from NYT request
