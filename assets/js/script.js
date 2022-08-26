@@ -1,6 +1,7 @@
 // globally scoped var's
 // =====================================================================
 var omdbKey = "38a65d1a";
+var movieDiv = document.getElementById("movie");
 
 // write a function which initializes code from event listener on submit button
 // =====================================================================
@@ -34,7 +35,6 @@ function omdbDataRequest(movie) {
       var runtime = data.Runtime;
       var genre = data.Genre;
       var dir = data.Director;
-
       //   pass data into function call as arguments
       createMovieDataElements(title, year, rated, runtime, genre, dir);
     });
@@ -44,8 +44,6 @@ function omdbDataRequest(movie) {
 // response data from OMDB request
 // =======================================================================
 function createMovieDataElements(title, year, rated, runtime, genre, director) {
-  // get element of "movie" from document
-  var movieDiv = document.getElementById("movie");
   // dynamically create elements
   var movieTitle = document.createElement("h2");
   var movieYear = document.createElement("h3");
@@ -59,6 +57,10 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieRated.textContent = "Rating: " + rated;
   movieRuntime.textContent = "Runtime: " + runtime;
   movieGenre.textContent = "Genre: " + genre;
+
+  // remove existing data before append
+  removeOmdbBeforeAppend();
+
   movieDir.textContent = "Director: " + director;
   // append elements to document
   movieDiv.appendChild(movieTitle);
@@ -73,13 +75,18 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
 // =====================================================================
 
 // write a function which dynamically creates elements to display
-// response data from OMDB request
+// response poster data from OMDB request
 // =====================================================================
 
 // write a function which removes previously searched movie from document
 // so that incoming search data replaces previously searced data and does
 // not append below it
 // =====================================================================
+function removeOmdbBeforeAppend() {
+  while (movieDiv.hasChildNodes()) {
+    movieDiv.removeChild(movieDiv.firstChild);
+  }
+}
 
 // write a function which makes a fetch/http request to the NYT API
 // =====================================================================
