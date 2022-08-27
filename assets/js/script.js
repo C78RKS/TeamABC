@@ -2,7 +2,9 @@
 // =====================================================================
 var omdbKey = "38a65d1a";
 var movieDiv = document.getElementById("movie");
-var reviewsDiv = document.getElementById("reviews")
+var reviewsDiv = document.getElementById("reviews");
+var nytKey = "F65iUnYMHIuXFqyxD64typ0dIZG0gqFF";
+
 // write a function which initializes code from event listener on submit button
 // =====================================================================
 function init(event) {
@@ -53,7 +55,7 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   var movieGenre = document.createElement("h3");
   var movieDir = document.createElement("h3");
 
-    // set content on elements
+  // set content on elements
   movieTitle.textContent = "Title: " + title;
   movieYear.textContent = "Year: " + year;
   movieRated.textContent = "Rating: " + rated;
@@ -73,13 +75,6 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieDiv.appendChild(movieDir);
 }
 
-// write a function which makes a fetch/http request to the OMDB API for posters
-// =====================================================================
-
-// write a function which dynamically creates elements to display
-// response poster data from OMDB request
-// =====================================================================
-
 // write a function which removes previously searched movie from document
 // so that incoming search data replaces previously searced data and does
 // not append below it
@@ -93,11 +88,12 @@ function removeOmdbBeforeAppend() {
 // write a function which makes a fetch/http request to the NYT API
 // =====================================================================
 
-var nytKey = "F65iUnYMHIuXFqyxD64typ0dIZG0gqFF";
-var reviewDiv = document.getElementById("reviews");
-
 function nytDataRequest(movie) {
-  var nytUrl = "https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=" + movie + "&api-key=" + nytKey;
+  var nytUrl =
+    "https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=" +
+    movie +
+    "&api-key=" +
+    nytKey;
 
   fetch(nytUrl)
     .then(function (response) {
@@ -107,7 +103,7 @@ function nytDataRequest(movie) {
       console.log(data.results[0].display_title);
       console.log(data.results[0].link.url);
       console.log(data.results[0].summary_short);
-       
+
       //store returned data in var
       var nytTitle = data.results[0].display_title;
       var nytLink = data.results[0].link.url;
@@ -117,29 +113,26 @@ function nytDataRequest(movie) {
       console.log(nytSummary);
       createReviewDataElements(nytTitle, nytLink, nytSummary);
     });
-  }
-
-  function createReviewDataElements(title, link, summary) {
-    // dynamically create elements
-    var nytTitle = document.createElement("h2");
-    var nytLink = document.createElement("h3");
-    var nytSummary = document.createElement("h3");
-
-     // set content on elements
-     nytTitle.textContent = "Title: " + title;
-     nytLink.textContent = "Link: " + link;
-     nytSummary.textContent = "Summary: " + summary;
-
-     reviewsDiv.appendChild(nytTitle);
-     reviewsDiv.appendChild(nytLink);
-     reviewsDiv.appendChild(nytSummary);
-  }
-
-
+}
 
 // write a function which dynamically creates elements to display
 // response data from NYT request
 // =====================================================================
+function createReviewDataElements(title, link, summary) {
+  // dynamically create elements
+  var nytTitle = document.createElement("h2");
+  var nytLink = document.createElement("h3");
+  var nytSummary = document.createElement("h3");
+
+  // set content on elements
+  nytTitle.textContent = "Title: " + title;
+  nytLink.textContent = "Link: " + link;
+  nytSummary.textContent = "Summary: " + summary;
+
+  reviewsDiv.appendChild(nytTitle);
+  reviewsDiv.appendChild(nytLink);
+  reviewsDiv.appendChild(nytSummary);
+}
 
 // write a function which removes previous review from document
 // so that incoming review data replaces previous review data and does
@@ -155,6 +148,9 @@ function nytDataRequest(movie) {
 // write a function which dynamically displays watchlist
 // =====================================================================
 
+// write a function which deletes movies from watchlist
+// =====================================================================
+
 // create an event listener for search bar submit form from document
 // =====================================================================
 var inputForm = document.getElementById("input-form");
@@ -163,4 +159,8 @@ inputForm.addEventListener("submit", init);
 
 // using event delegation, create an event listener for a button which
 // saves movies to a watchlist
+// =====================================================================
+
+// using event delegation, create an event listener for a button "X"
+// which deletes movies from watchlist
 // =====================================================================
