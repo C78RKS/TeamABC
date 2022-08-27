@@ -55,6 +55,8 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   var movieGenre = document.createElement("p");
   var movieDir = document.createElement("p");
 
+  var taskbutton = document.createElement("button");
+
   // set content on elements
   movieTitle.textContent = "Title: " + title;
   movieYear.textContent = "Year: " + year;
@@ -62,6 +64,9 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieRuntime.textContent = "Runtime: " + runtime;
   movieGenre.textContent = "Genre: " + genre;
 
+  taskbutton.textContent = "Save to Watchlist";
+  taskbutton.setAttribute("id", "save-button");
+  taskbutton.setAttribute("class", "btn hover:cursor-pointer inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mt-5");
   movieTitle.setAttribute("class", "text-3xl");
 
   // remove existing data before append
@@ -75,6 +80,7 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieDiv.appendChild(movieRuntime);
   movieDiv.appendChild(movieGenre);
   movieDiv.appendChild(movieDir);
+  movieDiv.appendChild(taskbutton);
 }
 
 // write a function which removes previously searched movie from document
@@ -136,7 +142,7 @@ function nytDataRequest(movie) {
      reviewsDiv.appendChild(nytLink);
      reviewsDiv.appendChild(nytSummary);
   }
-}
+
 
 // write a function which removes previous review from document
 // so that incoming review data replaces previous review data and does
