@@ -154,7 +154,7 @@ function createReviewDataElements(array) {
     reviewsDiv.appendChild(nytLink);
     
   }
-}
+
 
 // write a function which removes previous review from document
 // so that incoming review data replaces previous review data and does
@@ -163,9 +163,50 @@ function createReviewDataElements(array) {
 
 // write a function which gets local storage if it exists
 // =====================================================================
+function getLocalStorage () {
+  var storedList = JSON.parse(localStorage.getItems("list"));
+
+  if (storedList !== null) {
+    list = storedList;
+  }
+console.log("it worked")
+ // renderList();
+}
+
 
 // write a function which stores movies to local storage
 // =====================================================================
+
+var watchList = document.querySelector("#watchlist");
+var listCount = document.querySelector("#list-count");
+var addButton = document.querySelector("add");
+
+var list = [];
+
+// function renderList() {
+//   watchList.innerHTML = ""; //List of movies
+//   listCount.textContent = list.length; //counts the movies on the watch list
+
+//   for (var i =o; i < list.length; i++) {
+//     var list = list[i];
+
+//     var li = document.createElement("li");
+//     li.textContent = list;
+//     li.setAttribute("data-index", i);
+
+//     todoList.appendChild(li);
+  
+//      }
+
+
+//   }
+
+// function storedList() {
+//   localStorage.setItems("list", JSON.stringify(list));
+// }
+
+
+
 
 // write a function which dynamically displays watchlist
 // =====================================================================
@@ -182,6 +223,7 @@ inputForm.addEventListener("submit", init);
 // using event delegation, create an event listener for a button which
 // saves movies to a watchlist
 // =====================================================================
+addButton.addEventListener("click", getLocalStorage);
 
 // using event delegation, create an event listener for a button "X"
 // which deletes movies from watchlist
