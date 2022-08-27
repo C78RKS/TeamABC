@@ -4,6 +4,9 @@ var omdbKey = "38a65d1a";
 var movieDiv = document.getElementById("movie");
 var reviewsDiv = document.getElementById("reviews");
 var nytKey = "F65iUnYMHIuXFqyxD64typ0dIZG0gqFF";
+var list = [];
+
+// getLocalStorage();
 
 // write a function which initializes code from event listener on submit button
 // =====================================================================
@@ -40,6 +43,9 @@ function omdbDataRequest(movie) {
       var dir = data.Director;
       //   pass data into function call as arguments
       createMovieDataElements(title, year, rated, runtime, genre, dir);
+      sendToLocalStorage(title);
+
+      // call send to local function here, pass "title"
     });
 }
 
@@ -139,9 +145,9 @@ function createReviewDataElements(array) {
     var nytSummary = document.createElement("p");
     // var nytAnchor = document.createElement("a");
 
-    var link = array[i].link.url
+    var link = array[i].link.url;
     nytLink.setAttribute("href", link);
-    nytLink.textContent="Read Review Here";
+    nytLink.textContent = "Read Review Here";
 
     // set content on elements
     nytTitle.textContent = "Title: " + array[i].display_title;
@@ -152,9 +158,8 @@ function createReviewDataElements(array) {
     reviewsDiv.appendChild(nytTitle);
     reviewsDiv.appendChild(nytSummary);
     reviewsDiv.appendChild(nytLink);
-    
   }
-
+}
 
 // write a function which removes previous review from document
 // so that incoming review data replaces previous review data and does
@@ -163,56 +168,66 @@ function createReviewDataElements(array) {
 
 // write a function which gets local storage if it exists
 // =====================================================================
-function getLocalStorage () {
-  var storedList = JSON.parse(localStorage.getItems("list"));
+
+function getLocalStorage() {
+  var storedList = JSON.parse(localStorage.getItem("list"));
 
   if (storedList !== null) {
     list = storedList;
-  }
-console.log("it worked")
- // renderList();
-}
 
+    renderList();
+  }
+}
 
 // write a function which stores movies to local storage
 // =====================================================================
 
 var watchList = document.querySelector("#watchlist");
 var listCount = document.querySelector("#list-count");
-var addButton = document.querySelector("add");
+var addButton = document.querySelector("save-button");
 
-var list = [];
-
-// function renderList() {
-//   watchList.innerHTML = ""; //List of movies
-//   listCount.textContent = list.length; //counts the movies on the watch list
-
-//   for (var i =o; i < list.length; i++) {
-//     var list = list[i];
-
-//     var li = document.createElement("li");
-//     li.textContent = list;
-//     li.setAttribute("data-index", i);
-
-//     todoList.appendChild(li);
-  
-//      }
-
-
-//   }
-
-// function storedList() {
-//   localStorage.setItems("list", JSON.stringify(list));
-// }
-
-
-
+function sendToLocalStorage(title) {
+  list.push(title);
+  localStorage.setItem("list", JSON.stringify(list));
+}
 
 // write a function which dynamically displays watchlist
 // =====================================================================
+var savedMovies = document.querySelector("#saved-movies");
+function renderList() {
+  savedMovies.innerHTML = ""; //List of movies
+  //listCount.textContent = list.length; //counts the movies on the watch list
+  if(list !== null) {
+  for (var i = 0; i < list.length; i++) {
+    var movie = list[i];
+
+    var li = document.createElement("li");
+    li.textContent = movie;
+    li.setAttribute("data-index", i);
+
+    var button = document.createElement("button");
+    button.textContent = "X";
+
+    li.appendChild(button);
+    savedMovies.appendChild(li);
+  }
+}
+}
 
 // write a function which deletes movies from watchlist
 // =====================================================================
+function deleteMovie(event) {
+  var element = event.target
+  
+  if (element.matches("button") === true) {
+    // Get its data-index value and remove the todo element from the list
+    var index = element.parentElement.getAttribute("data-index");
+    list.splice(index, 1);
+    console.log(list);
+    localStorage.setItem("list", JSON.stringify(list));
+    getLocalStorage();
+}
+}
 
 // create an event listener for search bar submit form from document
 // =====================================================================
@@ -223,8 +238,9 @@ inputForm.addEventListener("submit", init);
 // using event delegation, create an event listener for a button which
 // saves movies to a watchlist
 // =====================================================================
-addButton.addEventListener("click", getLocalStorage);
+movieDiv.addEventListener("click", getLocalStorage);
 
 // using event delegation, create an event listener for a button "X"
 // which deletes movies from watchlist
 // =====================================================================
+savedMovies.addEventListener("click", deleteMovie);
