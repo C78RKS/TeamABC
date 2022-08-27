@@ -47,11 +47,11 @@ function omdbDataRequest(movie) {
 function createMovieDataElements(title, year, rated, runtime, genre, director) {
   // dynamically create elements
   var movieTitle = document.createElement("h2");
-  var movieYear = document.createElement("h3");
-  var movieRated = document.createElement("h3");
-  var movieRuntime = document.createElement("h3");
-  var movieGenre = document.createElement("h3");
-  var movieDir = document.createElement("h3");
+  var movieYear = document.createElement("p");
+  var movieRated = document.createElement("p");
+  var movieRuntime = document.createElement("p");
+  var movieGenre = document.createElement("p");
+  var movieDir = document.createElement("p");
 
     // set content on elements
   movieTitle.textContent = "Title: " + title;
@@ -60,8 +60,10 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieRuntime.textContent = "Runtime: " + runtime;
   movieGenre.textContent = "Genre: " + genre;
 
+  movieTitle.setAttribute("class", "text-3xl");
+
   // remove existing data before append
-  removeOmdbBeforeAppend();
+  removeOmdbBeforeAppend(movieDiv);
 
   movieDir.textContent = "Director: " + director;
   // append elements to document
@@ -73,20 +75,14 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieDiv.appendChild(movieDir);
 }
 
-// write a function which makes a fetch/http request to the OMDB API for posters
-// =====================================================================
-
-// write a function which dynamically creates elements to display
-// response poster data from OMDB request
-// =====================================================================
 
 // write a function which removes previously searched movie from document
 // so that incoming search data replaces previously searced data and does
 // not append below it
 // =====================================================================
-function removeOmdbBeforeAppend() {
-  while (movieDiv.hasChildNodes()) {
-    movieDiv.removeChild(movieDiv.firstChild);
+function removeOmdbBeforeAppend(div) {
+  while (div.hasChildNodes()) {
+    div.removeChild(div.firstChild);
   }
 }
 
@@ -104,9 +100,7 @@ function nytDataRequest(movie) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data.results[0].display_title);
-      console.log(data.results[0].link.url);
-      console.log(data.results[0].summary_short);
+      console.log(data);
        
       //store returned data in var
       var nytTitle = data.results[0].display_title;
@@ -118,28 +112,29 @@ function nytDataRequest(movie) {
       createReviewDataElements(nytTitle, nytLink, nytSummary);
     });
   }
-
+  
+  // write a function which dynamically creates elements to display
+  // response data from NYT request
+  // =====================================================================
   function createReviewDataElements(title, link, summary) {
     // dynamically create elements
     var nytTitle = document.createElement("h2");
-    var nytLink = document.createElement("h3");
-    var nytSummary = document.createElement("h3");
+    var nytLink = document.createElement("p");
+    var nytSummary = document.createElement("p");
 
      // set content on elements
      nytTitle.textContent = "Title: " + title;
      nytLink.textContent = "Link: " + link;
      nytSummary.textContent = "Summary: " + summary;
 
+     nytTitle.setAttribute("class", "text-3xl")
+
+    removeOmdbBeforeAppend(reviewsDiv);
+
      reviewsDiv.appendChild(nytTitle);
      reviewsDiv.appendChild(nytLink);
      reviewsDiv.appendChild(nytSummary);
   }
-
-
-
-// write a function which dynamically creates elements to display
-// response data from NYT request
-// =====================================================================
 
 // write a function which removes previous review from document
 // so that incoming review data replaces previous review data and does
@@ -153,6 +148,9 @@ function nytDataRequest(movie) {
 // =====================================================================
 
 // write a function which dynamically displays watchlist
+// =====================================================================
+
+// write a function which deletes movies from watchlist
 // =====================================================================
 
 // create an event listener for search bar submit form from document
