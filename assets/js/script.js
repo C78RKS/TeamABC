@@ -55,6 +55,8 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   var movieGenre = document.createElement("p");
   var movieDir = document.createElement("p");
 
+  var taskbutton = document.createElement("button");
+
   // set content on elements
   movieTitle.textContent = "Title: " + title;
   movieYear.textContent = "Year: " + year;
@@ -62,6 +64,12 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieRuntime.textContent = "Runtime: " + runtime;
   movieGenre.textContent = "Genre: " + genre;
 
+  taskbutton.textContent = "Save to Watchlist";
+  taskbutton.setAttribute("id", "save-button");
+  taskbutton.setAttribute(
+    "class",
+    "btn hover:cursor-pointer inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mt-5"
+  );
   movieTitle.setAttribute("class", "text-3xl");
 
   // remove existing data before append
@@ -75,6 +83,7 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieDiv.appendChild(movieRuntime);
   movieDiv.appendChild(movieGenre);
   movieDiv.appendChild(movieDir);
+  movieDiv.appendChild(taskbutton);
 }
 
 // write a function which removes previously searched movie from document
@@ -104,37 +113,46 @@ function nytDataRequest(movie) {
       console.log(data);
 
       //store returned data in var
-      var nytTitle = data.results[0].display_title;
-      var nytLink = data.results[0].link.url;
-      var nytSummary = data.results[0].summary_short;
-      console.log(nytTitle);
-      console.log(nytLink);
-      console.log(nytSummary);
-      createReviewDataElements(nytTitle, nytLink, nytSummary);
+      // var nytTitle = data.results[0].display_title;
+      // var nytLink = data.results[0].link.url;
+      // var nytSummary = data.results[0].summary_short;
+      // console.log(nytTitle);
+      // console.log(nytLink);
+      // console.log(nytSummary);
+
+      var dataResults = data.results;
+      console.log(dataResults);
+
+      createReviewDataElements(dataResults);
     });
-  }
-  
-  // write a function which dynamically creates elements to display
-  // response data from NYT request
-  // =====================================================================
-  function createReviewDataElements(title, link, summary) {
+}
+
+// write a function which dynamically creates elements to display
+// response data from NYT request
+// =====================================================================
+function createReviewDataElements(array) {
+  removeOmdbBeforeAppend(reviewsDiv);
+  for (i = 0; i < array.length; i++) {
     // dynamically create elements
     var nytTitle = document.createElement("h2");
-    var nytLink = document.createElement("p");
+    var nytLink = document.createElement("a");
     var nytSummary = document.createElement("p");
+    // var nytAnchor = document.createElement("a");
 
-     // set content on elements
-     nytTitle.textContent = "Title: " + title;
-     nytLink.textContent = "Link: " + link;
-     nytSummary.textContent = "Summary: " + summary;
+    var link = array[i].link.url
+    nytLink.setAttribute("href", link);
+    nytLink.textContent="Read Review Here";
 
-     nytTitle.setAttribute("class", "text-3xl")
+    // set content on elements
+    nytTitle.textContent = "Title: " + array[i].display_title;
+    nytSummary.textContent = "Summary: " + array[i].summary_short;
 
-    removeOmdbBeforeAppend(reviewsDiv);
+    nytTitle.setAttribute("class", "text-3xl");
 
-     reviewsDiv.appendChild(nytTitle);
-     reviewsDiv.appendChild(nytLink);
-     reviewsDiv.appendChild(nytSummary);
+    reviewsDiv.appendChild(nytTitle);
+    reviewsDiv.appendChild(nytSummary);
+    reviewsDiv.appendChild(nytLink);
+    
   }
 }
 
