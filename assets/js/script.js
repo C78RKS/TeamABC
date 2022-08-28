@@ -143,12 +143,17 @@ function createReviewDataElements(array) {
     // dynamically create elements
     var nytTitle = document.createElement("h2");
     var nytLink = document.createElement("a");
+    var nytDiv = document.createElement("div");
     var nytSummary = document.createElement("p");
     // var nytAnchor = document.createElement("a");
 
     var link = array[i].link.url;
     nytLink.setAttribute("href", link);
-    nytLink.textContent = "Read Review Here";
+    nytLink.setAttribute("class", "underline")
+    nytLink.textContent = "Read review";
+
+    nytDiv.setAttribute("class", "text-red-500 cust-fnt-sz");
+    nytDiv.appendChild(nytLink);
 
     // set content on elements
     nytTitle.textContent = "Title: " + array[i].display_title;
@@ -158,7 +163,7 @@ function createReviewDataElements(array) {
 
     reviewsDiv.appendChild(nytTitle);
     reviewsDiv.appendChild(nytSummary);
-    reviewsDiv.appendChild(nytLink);
+    reviewsDiv.appendChild(nytDiv);
   }
 }
 
