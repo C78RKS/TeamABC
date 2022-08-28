@@ -6,7 +6,8 @@ var reviewsDiv = document.getElementById("reviews");
 var nytKey = "F65iUnYMHIuXFqyxD64typ0dIZG0gqFF";
 var list = [];
 
-// getLocalStorage();
+getLocalStorage();
+renderList();
 
 // write a function which initializes code from event listener on submit button
 // =====================================================================
@@ -43,7 +44,7 @@ function omdbDataRequest(movie) {
       var dir = data.Director;
       //   pass data into function call as arguments
       createMovieDataElements(title, year, rated, runtime, genre, dir);
-      sendToLocalStorage(title);
+      // sendToLocalStorage(title);
 
       // call send to local function here, pass "title"
     });
@@ -64,7 +65,7 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   var taskbutton = document.createElement("button");
 
   // set content on elements
-  movieTitle.textContent = "Title: " + title;
+  movieTitle.textContent = title;
   movieYear.textContent = "Year: " + year;
   movieRated.textContent = "Rating: " + rated;
   movieRuntime.textContent = "Runtime: " + runtime;
@@ -175,7 +176,7 @@ function getLocalStorage() {
   if (storedList !== null) {
     list = storedList;
 
-    renderList();
+    // renderList();
   }
 }
 
@@ -186,18 +187,22 @@ var watchList = document.querySelector("#watchlist");
 var listCount = document.querySelector("#list-count");
 var addButton = document.querySelector("save-button");
 
-function sendToLocalStorage(title) {
+function sendToLocalStorage() {
+  var title = movieDiv.children[0].textContent;
+  getLocalStorage();
   list.push(title);
+  console.log(list);
   localStorage.setItem("list", JSON.stringify(list));
+  renderList();
 }
 
 // write a function which dynamically displays watchlist
 // =====================================================================
-var savedMovies = document.querySelector("#saved-movies");
 function renderList() {
+  var savedMovies = document.querySelector("#saved-movies");
   savedMovies.innerHTML = ""; //List of movies
+  // if(list !== null) {
   //listCount.textContent = list.length; //counts the movies on the watch list
-  if(list !== null) {
   for (var i = 0; i < list.length; i++) {
     var movie = list[i];
 
@@ -211,7 +216,7 @@ function renderList() {
     li.appendChild(button);
     savedMovies.appendChild(li);
   }
-}
+// }
 }
 
 // write a function which deletes movies from watchlist
@@ -226,6 +231,7 @@ function deleteMovie(event) {
     console.log(list);
     localStorage.setItem("list", JSON.stringify(list));
     getLocalStorage();
+    renderList();
 }
 }
 
@@ -238,9 +244,11 @@ inputForm.addEventListener("submit", init);
 // using event delegation, create an event listener for a button which
 // saves movies to a watchlist
 // =====================================================================
-movieDiv.addEventListener("click", getLocalStorage);
+// movieDiv.addEventListener("click", getLocalStorage);
+movieDiv.addEventListener("click", sendToLocalStorage);
 
 // using event delegation, create an event listener for a button "X"
 // which deletes movies from watchlist
 // =====================================================================
+var savedMovies = document.querySelector("#saved-movies");
 savedMovies.addEventListener("click", deleteMovie);
