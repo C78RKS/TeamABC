@@ -1,11 +1,11 @@
 // globally scoped var's
 // =====================================================================
 var omdbKey = "38a65d1a";
+var nytKey = "F65iUnYMHIuXFqyxD64typ0dIZG0gqFF";
 var inputForm = document.getElementById("input-form");
 var movieDiv = document.getElementById("movie");
 var reviewsDiv = document.getElementById("reviews");
 var savedMovies = document.querySelector("#saved-movies");
-var nytKey = "F65iUnYMHIuXFqyxD64typ0dIZG0gqFF";
 var list = [];
 
 getLocalStorage();
@@ -33,6 +33,7 @@ function init(event) {
 // write a function which makes a fetch/http request to the OMDB API for data
 // =====================================================================
 function omdbDataRequest(movie) {
+  // url endpoint
   var omdbUrl = "http://www.omdbapi.com/?t=" + movie + "&apikey=" + omdbKey;
 
   fetch(omdbUrl)
@@ -40,8 +41,7 @@ function omdbDataRequest(movie) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
-      //   stores desired data in var's
+      //   stores desired response data in var's
       var title = data.Title;
       var year = data.Year;
       var rated = data.Rated;
@@ -50,9 +50,6 @@ function omdbDataRequest(movie) {
       var dir = data.Director;
       //   pass data into function call as arguments
       createMovieDataElements(title, year, rated, runtime, genre, dir);
-      // sendToLocalStorage(title);
-
-      // call send to local function here, pass "title"
     });
 }
 
@@ -67,7 +64,6 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   var movieRuntime = document.createElement("p");
   var movieGenre = document.createElement("p");
   var movieDir = document.createElement("p");
-
   var taskbutton = document.createElement("button");
 
   // set content on elements
@@ -76,8 +72,9 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieRated.textContent = "Rating: " + rated;
   movieRuntime.textContent = "Runtime: " + runtime;
   movieGenre.textContent = "Genre: " + genre;
-
+  movieDir.textContent = "Director: " + director;
   taskbutton.textContent = "Save to Watchlist";
+  // dynamically set id and class attributes
   taskbutton.setAttribute("id", "save-button");
   taskbutton.setAttribute(
     "class",
@@ -85,10 +82,9 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   );
   movieTitle.setAttribute("class", "text-3xl");
 
-  // remove existing data before append
+  // remove existing data before append, pass in parent element as argument
   removeOmdbBeforeAppend(movieDiv);
 
-  movieDir.textContent = "Director: " + director;
   // append elements to document
   movieDiv.appendChild(movieTitle);
   movieDiv.appendChild(movieYear);
@@ -99,7 +95,7 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   movieDiv.appendChild(taskbutton);
 }
 
-// write a function which removes previously searched movie from document
+// write a function which removes previously searched data from document
 // so that incoming search data replaces previously searced data and does
 // not append below it
 // =====================================================================
@@ -112,6 +108,7 @@ function removeOmdbBeforeAppend(div) {
 // write a function which makes a fetch/http request to the NYT API
 // =====================================================================
 function nytDataRequest(movie) {
+  // url endpoint
   var nytUrl =
     "https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=" +
     movie +
@@ -123,19 +120,9 @@ function nytDataRequest(movie) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
-
-      //store returned data in var
-      // var nytTitle = data.results[0].display_title;
-      // var nytLink = data.results[0].link.url;
-      // var nytSummary = data.results[0].summary_short;
-      // console.log(nytTitle);
-      // console.log(nytLink);
-      // console.log(nytSummary);
-
+      // store specified array from results in var
       var dataResults = data.results;
-      console.log(dataResults);
-
+      // pass array into function to create/append results to document
       createReviewDataElements(dataResults);
     });
 }
@@ -144,6 +131,7 @@ function nytDataRequest(movie) {
 // response data from NYT request
 // =====================================================================
 function createReviewDataElements(array) {
+  // empty div prior to append
   removeOmdbBeforeAppend(reviewsDiv);
   for (i = 0; i < array.length; i++) {
     // dynamically create elements
@@ -151,9 +139,8 @@ function createReviewDataElements(array) {
     var nytLink = document.createElement("a");
     var nytDiv = document.createElement("div");
     var nytSummary = document.createElement("p");
-    // var nytAnchor = document.createElement("a");
-
     var link = array[i].link.url;
+    // set attributes/content of url/link results to append to document
     nytLink.setAttribute("href", link);
     nytLink.setAttribute("class", "underline");
     nytLink.textContent = "Read review";
@@ -166,7 +153,7 @@ function createReviewDataElements(array) {
     nytSummary.textContent = "Summary: " + array[i].summary_short;
 
     nytTitle.setAttribute("class", "text-3xl");
-
+    //append to document
     reviewsDiv.appendChild(nytTitle);
     reviewsDiv.appendChild(nytSummary);
     reviewsDiv.appendChild(nytDiv);
@@ -175,10 +162,9 @@ function createReviewDataElements(array) {
 
 // write a function which gets local storage if it exists
 // =====================================================================
-
 function getLocalStorage() {
+  // parse data from localstorage as json
   var storedList = JSON.parse(localStorage.getItem("list"));
-
   if (storedList !== null) {
     list = storedList;
   }
@@ -187,6 +173,7 @@ function getLocalStorage() {
 // write a function which stores movies to local storage
 // =====================================================================
 function sendToLocalStorage() {
+  // get title from div to add to var list
   var title = movieDiv.children[0].textContent;
   // if movie to be saved is already in watchlist, stop function
   for (i = 0; i < list.length; i++) {
@@ -194,6 +181,8 @@ function sendToLocalStorage() {
       return;
     }
   }
+  // update var list by getting localstorage, then push new title into list
+  // then update localstorage and append to document with renderLIst function
   getLocalStorage();
   list.push(title);
   localStorage.setItem("list", JSON.stringify(list));
@@ -203,12 +192,12 @@ function sendToLocalStorage() {
 // write a function which dynamically displays watchlist
 // =====================================================================
 function renderList() {
+  // empties unordered list from html prior to append
   savedMovies.innerHTML = ""; //List of movies
-  // if(list !== null) {
-  //listCount.textContent = list.length; //counts the movies on the watch list
+  // loop through var list and create/append for each item in list
   for (var i = 0; i < list.length; i++) {
     var movie = list[i];
-
+    // create/set content for each index of i
     var li = document.createElement("li");
     li.textContent = movie;
     li.setAttribute("data-index", i);
@@ -219,7 +208,7 @@ function renderList() {
       "class",
       "ml-2 px-1 text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm text-center mr-2 mb-2 dark:bg-red-500 dark:hover:bg-red-700 dark:focus:ring-red-900"
     );
-
+    // append to document
     li.appendChild(button);
     savedMovies.appendChild(li);
   }
@@ -229,13 +218,15 @@ function renderList() {
 // write a function which deletes movies from watchlist
 // =====================================================================
 function deleteMovie(event) {
+  // of multiple li items in document, select the li which tirggered the
+  // the event on click
   var element = event.target;
-
+  // if event matches element of button
   if (element.matches("button") === true) {
-    // Get its data-index value and remove the todo element from the list
+    // Get its data-index value and remove the li element from watchlist
     var index = element.parentElement.getAttribute("data-index");
     list.splice(index, 1);
-    console.log(list);
+    // update localstorage and append new list
     localStorage.setItem("list", JSON.stringify(list));
     getLocalStorage();
     renderList();
