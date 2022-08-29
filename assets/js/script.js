@@ -1,8 +1,10 @@
 // globally scoped var's
 // =====================================================================
 var omdbKey = "38a65d1a";
+var inputForm = document.getElementById("input-form");
 var movieDiv = document.getElementById("movie");
 var reviewsDiv = document.getElementById("reviews");
+var savedMovies = document.querySelector("#saved-movies");
 var nytKey = "F65iUnYMHIuXFqyxD64typ0dIZG0gqFF";
 var list = [];
 
@@ -17,6 +19,10 @@ function init(event) {
   var inputField = document.getElementById("input-field");
   //   gets input value from search bar
   var movieTitle = inputField.value;
+  // if search bar input is empty, stop function
+  if (movieTitle === "") {
+    return;
+  }
   //   sends http request to omdb for movie data, passing in movieTitle as an argument
   omdbDataRequest(movieTitle);
   nytDataRequest(movieTitle);
@@ -149,10 +155,10 @@ function createReviewDataElements(array) {
 
     var link = array[i].link.url;
     nytLink.setAttribute("href", link);
-    nytLink.setAttribute("class", "underline")
+    nytLink.setAttribute("class", "underline");
     nytLink.textContent = "Read review";
 
-    nytDiv.setAttribute("class", "text-red-500 cust-fnt-sz");
+    nytDiv.setAttribute("class", "text-red-500 cust-fnt-sz mb-5");
     nytDiv.appendChild(nytLink);
 
     // set content on elements
@@ -167,11 +173,6 @@ function createReviewDataElements(array) {
   }
 }
 
-// write a function which removes previous review from document
-// so that incoming review data replaces previous review data and does
-// not append below it
-// =====================================================================
-
 // write a function which gets local storage if it exists
 // =====================================================================
 
@@ -180,23 +181,21 @@ function getLocalStorage() {
 
   if (storedList !== null) {
     list = storedList;
-
-    // renderList();
   }
 }
 
 // write a function which stores movies to local storage
 // =====================================================================
-
-var watchList = document.querySelector("#watchlist");
-var listCount = document.querySelector("#list-count");
-var addButton = document.querySelector("save-button");
-
 function sendToLocalStorage() {
   var title = movieDiv.children[0].textContent;
+  // if movie to be saved is already in watchlist, stop function
+  for (i = 0; i < list.length; i++) {
+    if (list[i] === title) {
+      return;
+    }
+  }
   getLocalStorage();
   list.push(title);
-  console.log(list);
   localStorage.setItem("list", JSON.stringify(list));
   renderList();
 }
@@ -204,7 +203,6 @@ function sendToLocalStorage() {
 // write a function which dynamically displays watchlist
 // =====================================================================
 function renderList() {
-  var savedMovies = document.querySelector("#saved-movies");
   savedMovies.innerHTML = ""; //List of movies
   // if(list !== null) {
   //listCount.textContent = list.length; //counts the movies on the watch list
@@ -214,22 +212,25 @@ function renderList() {
     var li = document.createElement("li");
     li.textContent = movie;
     li.setAttribute("data-index", i);
-    li.setAttribute("class", "bg-blue-200 rounded-md mt-2")
+    li.setAttribute("class", "bg-blue-200 rounded-md mt-2");
     var button = document.createElement("button");
     button.textContent = "X";
-    button.setAttribute("class", "ml-2 px-1 text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm text-center mr-2 mb-2 dark:bg-red-500 dark:hover:bg-red-700 dark:focus:ring-red-900")
+    button.setAttribute(
+      "class",
+      "ml-2 px-1 text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm text-center mr-2 mb-2 dark:bg-red-500 dark:hover:bg-red-700 dark:focus:ring-red-900"
+    );
 
     li.appendChild(button);
     savedMovies.appendChild(li);
   }
-// }
+  // }
 }
 
 // write a function which deletes movies from watchlist
 // =====================================================================
 function deleteMovie(event) {
-  var element = event.target
-  
+  var element = event.target;
+
   if (element.matches("button") === true) {
     // Get its data-index value and remove the todo element from the list
     var index = element.parentElement.getAttribute("data-index");
@@ -238,23 +239,20 @@ function deleteMovie(event) {
     localStorage.setItem("list", JSON.stringify(list));
     getLocalStorage();
     renderList();
-}
+  }
 }
 
 // create an event listener for search bar submit form from document
 // =====================================================================
-var inputForm = document.getElementById("input-form");
 // calls init function upon submit button
 inputForm.addEventListener("submit", init);
 
 // using event delegation, create an event listener for a button which
 // saves movies to a watchlist
 // =====================================================================
-// movieDiv.addEventListener("click", getLocalStorage);
 movieDiv.addEventListener("click", sendToLocalStorage);
 
 // using event delegation, create an event listener for a button "X"
 // which deletes movies from watchlist
 // =====================================================================
-var savedMovies = document.querySelector("#saved-movies");
 savedMovies.addEventListener("click", deleteMovie);
