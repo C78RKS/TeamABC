@@ -206,7 +206,7 @@ function renderList() {
     button.textContent = "X";
     button.setAttribute(
       "class",
-      "ml-2 px-1 text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm text-center mr-2 mb-2 dark:bg-red-500 dark:hover:bg-red-700 dark:focus:ring-red-900"
+      "float-right ml-2 px-1 text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm text-center mr-2 mb-2 dark:bg-red-500 dark:hover:bg-red-700 dark:focus:ring-red-900"
     );
     // append to document
     li.appendChild(button);
