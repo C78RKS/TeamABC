@@ -1,6 +1,11 @@
 body {
+<<<<<<< HEAD
     background-image: url("../images/filmstrip-3.png");
     /* background-size: cover; */
+=======
+    background-image: url("../images/filmstrip.png");
+    /*background-size: cover;*/
+>>>>>>> main
 }
 
 #movie p {
@@ -11,3 +16,9 @@ body {
   font-size: 20px;
 }
 
+<<<<<<< HEAD
+=======
+.cust-fnt-sz {
+  font-size: 21px;
+}
+>>>>>>> main
