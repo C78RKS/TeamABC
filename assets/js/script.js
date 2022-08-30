@@ -201,7 +201,7 @@ function renderList() {
     var li = document.createElement("li");
     li.textContent = movie;
     li.setAttribute("data-index", i);
-    li.setAttribute("class", "bg-blue-200 rounded-md mt-2");
+    li.setAttribute("class", "bg-blue-200 rounded-md mx-6 px-3 pt-1");
     var button = document.createElement("button");
     button.textContent = "X";
     button.setAttribute(
