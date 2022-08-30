@@ -78,7 +78,7 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   taskbutton.setAttribute("id", "save-button");
   taskbutton.setAttribute(
     "class",
-    "btn hover:cursor-pointer inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out mt-5"
+    "btn hover:cursor-pointer inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out my-5"
   );
   movieTitle.setAttribute("class", "text-3xl");
 
@@ -145,7 +145,7 @@ function createReviewDataElements(array) {
     nytLink.setAttribute("class", "underline");
     nytLink.textContent = "Read review";
 
-    nytDiv.setAttribute("class", "text-red-500 cust-fnt-sz mb-5");
+    nytDiv.setAttribute("class", "text-indigo-500 cust-fnt-sz mb-5");
     nytDiv.appendChild(nytLink);
 
     // set content on elements
