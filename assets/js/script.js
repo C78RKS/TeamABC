@@ -172,23 +172,25 @@ function getLocalStorage() {
 
 // write a function which stores movies to local storage
 // =====================================================================
-function sendToLocalStorage() {
-  // get title from div to add to var list
-  var title = movieDiv.children[0].textContent;
-  // if movie to be saved is already in watchlist, stop function
-  for (i = 0; i < list.length; i++) {
-    if (list[i] === title) {
-      return;
+function sendToLocalStorage(event) {
+  // event delegation on dynamically created button
+  if (event.target && event.target.id == "save-button") {
+    // get title from div to add to var list
+    var title = movieDiv.children[0].textContent;
+    // if movie to be saved is already in watchlist, stop function
+    for (i = 0; i < list.length; i++) {
+      if (list[i] === title) {
+        return;
+      }
     }
+    // update var list by getting localstorage, then push new title into list
+    // then update localstorage and append to document with renderLIst function
+    getLocalStorage();
+    list.push(title);
+    localStorage.setItem("list", JSON.stringify(list));
+    renderList();
   }
-  // update var list by getting localstorage, then push new title into list
-  // then update localstorage and append to document with renderLIst function
-  getLocalStorage();
-  list.push(title);
-  localStorage.setItem("list", JSON.stringify(list));
-  renderList();
 }
-
 // write a function which dynamically displays watchlist
 // =====================================================================
 function renderList() {
@@ -201,7 +203,7 @@ function renderList() {
     var li = document.createElement("li");
     li.textContent = movie;
     li.setAttribute("data-index", i);
-    li.setAttribute("class", "bg-blue-200 rounded-md mx-6 px-3 pt-1");
+    li.setAttribute("class", "bg-blue-200 rounded-md mx-6 mb-2 px-3 pt-1");
     var button = document.createElement("button");
     button.textContent = "X";
     button.setAttribute(
