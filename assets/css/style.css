@@ -1,6 +1,6 @@
 body {
     background-image: url("../images/filmstrip-3.png");
-    background-size: cover;
+    /* background-size: cover; */
 }
 
 #movie p {
@@ -10,3 +10,4 @@ body {
 #reviews p {
   font-size: 20px;
 }
+
