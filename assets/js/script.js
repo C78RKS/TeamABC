@@ -35,7 +35,7 @@ function init(event) {
 // =====================================================================
 function omdbDataRequest(movie) {
   // url endpoint
-  var omdbUrl = "http://www.omdbapi.com/?t=" + movie + "&apikey=" + omdbKey;
+  var omdbUrl = "https://www.omdbapi.com/?t=" + movie + "&apikey=" + omdbKey;
 
   fetch(omdbUrl)
     .then(function (response) {
