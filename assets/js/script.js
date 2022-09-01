@@ -193,15 +193,6 @@ function sendToLocalStorage() {
 
 // write a function which dynamically displays watchlist
 // =====================================================================
-// function renderList() {
-//     if (list.length !== 0) {
-//     var watchListTitle = document.createElement("h2");
-//     watchListTitle.textContent = "My Watch List:";
-//     watchListTitle.setAttribute("class", "text-3xl");
-//     watchList.insertBefore(watchListTitle, watchList.children[0]);
-
-//     }
-
     
 function renderList() {
     var watchListTitle = document.getElementById("listid");
@@ -213,9 +204,7 @@ function renderList() {
       watchListTitle.hidden = true;
     }
 
-  
-  
-  // empties unordered list from html prior to append
+    // empties unordered list from html prior to append
   savedMovies.innerHTML = ""; //List of movies
   // loop through var list and create/append for each item in list
   for (var i = 0; i < list.length; i++) {
