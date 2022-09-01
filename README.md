@@ -1,8 +1,8 @@
 # Team ABC (MovieBuff)
 
- 	![Project Clip](./assets/images/projectclip.gif)
+ 	![Project Clip](/TeamABC/assets/images/projectclip.gif)
 
-===
+--- 
 ## Criteria:
  A web app that allows users to search for movies and access external review links for those films-including ticket options and other extensive information, video critiques and more. If the user finds something they are interested in, they can save those movie titles to a watchlist for future reference.
 
