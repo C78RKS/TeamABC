@@ -1,6 +1,6 @@
 # Team ABC (MovieBuff)
 
- 	![Project Clip](/TeamABC/assets/images/projectclip.gif)
+ 	![Project Clip](./TeamABC/assets/images/projectclip.gif)
 
 --- 
 ## Criteria:
