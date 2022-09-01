@@ -6,6 +6,7 @@ var inputForm = document.getElementById("input-form");
 var movieDiv = document.getElementById("movie");
 var reviewsDiv = document.getElementById("reviews");
 var savedMovies = document.querySelector("#saved-movies");
+var watchList = document.querySelector("#watchlist");
 var list = [];
 
 getLocalStorage();
@@ -78,9 +79,9 @@ function createMovieDataElements(title, year, rated, runtime, genre, director) {
   taskbutton.setAttribute("id", "save-button");
   taskbutton.setAttribute(
     "class",
-    "btn hover:cursor-pointer inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out my-5"
+    "btn hover:cursor-pointer inline-block px-8  py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out my-5"
   );
-  movieTitle.setAttribute("class", "text-3xl");
+  movieTitle.setAttribute("class", "mx-20 text-3xl");
 
   // remove existing data before append, pass in parent element as argument
   removeOmdbBeforeAppend(movieDiv);
@@ -143,6 +144,7 @@ function createReviewDataElements(array) {
     // set attributes/content of url/link results to append to document
     nytLink.setAttribute("href", link);
     nytLink.setAttribute("class", "underline");
+    nytLink.setAttribute("target", "_blank");
     nytLink.textContent = "Read review";
 
     nytDiv.setAttribute("class", "text-indigo-500 cust-fnt-sz mb-5");
@@ -191,7 +193,28 @@ function sendToLocalStorage() {
 
 // write a function which dynamically displays watchlist
 // =====================================================================
+// function renderList() {
+//     if (list.length !== 0) {
+//     var watchListTitle = document.createElement("h2");
+//     watchListTitle.textContent = "My Watch List:";
+//     watchListTitle.setAttribute("class", "text-3xl");
+//     watchList.insertBefore(watchListTitle, watchList.children[0]);
+
+//     }
+
+    
 function renderList() {
+    var watchListTitle = document.getElementById("listid");
+    if (list.length !== 0) {
+    watchListTitle.hidden = false;
+    }
+    else
+    {
+      watchListTitle.hidden = true;
+    }
+
+  
+  
   // empties unordered list from html prior to append
   savedMovies.innerHTML = ""; //List of movies
   // loop through var list and create/append for each item in list
@@ -201,7 +224,7 @@ function renderList() {
     var li = document.createElement("li");
     li.textContent = movie;
     li.setAttribute("data-index", i);
-    li.setAttribute("class", "bg-blue-200 rounded-md mx-6 px-3 pt-1");
+    li.setAttribute("class", "bg-blue-200 rounded-md mx-6 px-3 py-1 mb-2");
     var button = document.createElement("button");
     button.textContent = "X";
     button.setAttribute(

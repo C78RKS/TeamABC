@@ -1,11 +1,12 @@
 body {
   background-image: url("../images/filmstrip.png");
-  /*background-size: cover;*/
-}
+  }
 
 #movie p {
   font-size: 20px;
-}
+           }
+
+
 
 #reviews p {
   font-size: 20px;
